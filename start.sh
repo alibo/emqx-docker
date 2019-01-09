@@ -13,10 +13,16 @@ fi
 LOCAL_IP=$(hostname -i |grep -E -oh '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])'|head -n 1)
 
 ## EMQ Base settings and plugins setting
-# Base settings in /opt/emqx/etc/emqx.conf
-# Plugin settings in /opt/emqx/etc/plugins
+# Base settings in $_EMQ_HOME/etc/emqx.conf
+# Plugin settings in $_EMQ_HOME/etc/plugins
 
-_EMQX_HOME="/opt/emqx"
+$_EMQ_HOME=$HOME
+
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${_EMQ_HOME}:/sbin/nologin" >> /etc/passwd
+  fi
+fi
 
 if [[ -z "$PLATFORM_ETC_DIR" ]]; then
     export PLATFORM_ETC_DIR="$_EMQX_HOME/etc"
@@ -94,8 +100,8 @@ if [[ ! -z "$EMQX_ADMIN_PASSWORD" ]]; then
 fi
 
 # Catch all EMQX_ prefix environment variable and match it in configure file
-CONFIG=/opt/emqx/etc/emqx.conf
-CONFIG_PLUGINS=/opt/emqx/etc/plugins
+CONFIG=$_EMQ_HOME/etc/emqx.conf
+CONFIG_PLUGINS=$_EMQ_HOME/etc/plugins
 for VAR in $(env)
 do
     # Config normal keys such like node.name = emqx@127.0.0.1
@@ -128,20 +134,18 @@ if [[ ! -z "$EMQX_LOADED_PLUGINS" ]]; then
     echo "EMQX_LOADED_PLUGINS=$EMQX_LOADED_PLUGINS"
     # First, remove special char at header
     # Next, replace special char to ".\n" to fit emq loaded_plugins format
-    echo $(echo "$EMQX_LOADED_PLUGINS."|sed -e "s/^[^A-Za-z0-9_]\{1,\}//g"|sed -e "s/[^A-Za-z0-9_]\{1,\}/\. /g")|tr ' ' '\n' > /opt/emqx/data/loaded_plugins
+    echo $(echo "$EMQX_LOADED_PLUGINS."|sed -e "s/^[^A-Za-z0-9_]\{1,\}//g"|sed -e "s/[^A-Za-z0-9_]\{1,\}/\. /g")|tr ' ' '\n' > $_EMQ_HOME/data/loaded_plugins
 fi
 
 ## EMQ Main script
 
 # Start and run emqx, and when emqx crashed, this container will stop
 
-/opt/emqx/bin/emqx start
-
-tail -f /opt/emqx/log/erlang.log.1 &
+$_EMQ_HOME/bin/emqx foreground &
 
 # Wait and ensure emqx status is running
 WAIT_TIME=0
-while [[ -z "$(/opt/emqx/bin/emqx_ctl status |grep 'is running'|awk '{print $1}')" ]]
+while [[ -z "$($_EMQ_HOME/bin/emqx_ctl status |grep 'is running'|awk '{print $1}')" ]]
 do
     sleep 1
     echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:waiting emqx"
@@ -167,14 +171,14 @@ fi
 
 if [[ ! -z "$EMQX_JOIN_CLUSTER" ]]; then
     echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:emqx try join $EMQX_JOIN_CLUSTER"
-    /opt/emqx/bin/emqx_ctl cluster join $EMQX_JOIN_CLUSTER &
+    $_EMQ_HOME/bin/emqx_ctl cluster join $EMQX_JOIN_CLUSTER &
 fi
 
 # Change admin password
 
 if [[ ! -z "$EMQX_ADMIN_PASSWORD" ]]; then
     echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:admin password changed to $EMQX_ADMIN_PASSWORD"
-    /opt/emqx/bin/emqx_ctl admins passwd admin $EMQX_ADMIN_PASSWORD &
+    $_EMQ_HOME/bin/emqx_ctl admins passwd admin $EMQX_ADMIN_PASSWORD &
 fi
 
 # monitor emqx is running, or the docker must stop to let docker PaaS know
@@ -185,7 +189,7 @@ IDLE_TIME=0
 while [[ $IDLE_TIME -lt 5 ]]
 do
     IDLE_TIME=$((IDLE_TIME+1))
-    if [[ ! -z "$(/opt/emqx/bin/emqx_ctl status |grep 'is running'|awk '{print $1}')" ]]; then
+    if [[ ! -z "$($_EMQ_HOME/bin/emqx_ctl status |grep 'is running'|awk '{print $1}')" ]]; then
         IDLE_TIME=0
     else
         echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:emqx not running, waiting for recovery in $((25-IDLE_TIME*5)) seconds"
@@ -196,7 +200,7 @@ done
 # If running to here (the result 5 times not is running, thus in 25s emqx is not running), exit docker image
 # Then the high level PaaS, e.g. docker swarm mode, will know and alert, rebanlance this service
 
-# tail $(ls /opt/emqx/log/*)
+# tail $(ls $_EMQ_HOME/log/*)
 
 echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:emqx exit abnormally"
 exit 1
