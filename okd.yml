@@ -48,8 +48,8 @@ objects:
     type: ClusterIP
 
 
-- apiVersion: v1
-  kind: ConfigMap
+- kind: ConfigMap
+  apiVersion: v1
   data:
     EMQ_CLUSTER__AUTOCLEAN: 5m
     EMQ_CLUSTER__AUTOHEAL: "on"
@@ -67,18 +67,19 @@ objects:
     app: "${NAME}"
 
 - kind: ConfigMap
-    apiVersion: v1
-    metadata:
-      name: "${SERVICE_NAME}-certs"
-    data:
-      key.pem: |-
-        <!-- private key -->
-      cert.pem: |-
-        <!-- certificate -->
-      cacert.pem: |-
-        <!-- custom ca certificate -->
-      dh-params.pem: |-
-        <!-- Ephemeral Diffie-Helman key exchange -->
+  apiVersion: v1
+  metadata:
+    name: "${SERVICE_NAME}-certs"
+    app: "${NAME}"
+  data:
+    key.pem: |-
+      <!-- private key -->
+    cert.pem: |-
+      <!-- certificate -->
+    cacert.pem: |-
+      <!-- custom ca certificate -->
+    dh-params.pem: |-
+      <!-- Ephemeral Diffie-Helman key exchange -->
 
 - apiVersion: authorization.openshift.io/v1
   kind: RoleBinding
