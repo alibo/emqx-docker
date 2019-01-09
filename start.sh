@@ -141,9 +141,7 @@ fi
 
 # Start and run emqx, and when emqx crashed, this container will stop
 
-exec $_EMQ_HOME/bin/emqx start
-
-tail -f /opt/emqx/log/erlang.log.1 &
+$_EMQ_HOME/bin/emqx foreground &
 
 # Wait and ensure emqx status is running
 WAIT_TIME=0
