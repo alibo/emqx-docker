@@ -133,7 +133,7 @@ objects:
     triggers:
     - type: ConfigChange
 
-- apiVersion: v1
+- apiVersion: apps/v1beta1
   kind: StatefulSet
   metadata:
     app: "${NAME}"
