@@ -36,15 +36,16 @@ RUN set -xe \
         && cd / && rm -rf /emqx \
         && ln -s /opt/emqx/bin/* /usr/local/bin/ \
         && apk --purge del .build-deps .fetch-deps \
-        && rm -rf /var/cache/apk/* \
+        && rm -rf /var/cache/apk/* 
 
-        WORKDIR ${HOME}
+WORKDIR ${HOME}
 
 COPY ./start.sh ./
 RUN chmod +x ./start.sh
 
 RUN adduser -D -u 10001 emqx
-RUN chgrp -Rf emqx /opt/emqx && chmod -Rf g+w /opt/emqx \
+RUN mkdir -p /opt/emqx/log /opt/emqx/data /opt/emqx/lib /opt/emqx/etc \
+        && chgrp -Rf emqx /opt/emqx && chmod -Rf g+w /opt/emqx \
         && chown -Rf emqx /opt/emqx
 
 USER 10001
