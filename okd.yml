@@ -136,7 +136,10 @@ objects:
 - apiVersion: apps/v1beta1
   kind: StatefulSet
   metadata:
-    app: "${NAME}"
+    name: "${SERVICE_NAME}"
+    labels:
+      name: "${SERVICE_NAME}"
+      app: "${NAME}"
   spec:
     replicas: 3
     serviceName: "${SERVICE_NAME}"
@@ -192,9 +195,9 @@ objects:
   metadata:
     labels:
       app: ${NAME}
-    name: ${NAME}-WS
+    name: wss
   spec:
-    host: ${WEBSOCKET_ROUTE_PREFIX}.${HOSTNAME}
+    host: ${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 8083-tcp
     tls:
@@ -211,9 +214,9 @@ objects:
   metadata:
     labels:
       app: ${NAME}
-    name: ${NAME}-MQTT
+    name: mqtt
   spec:
-    host: ${MQTT_ROUTE_PREFIX}.${HOSTNAME}
+    host: ${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 8883-tcp
     tls:
@@ -229,9 +232,9 @@ objects:
   metadata:
     labels:
       app: ${NAME}
-    name: ${NAME}-MQTT-edge
+    name: mqtt-edge
   spec:
-    host: ${MQTT_EDGE_ROUTE_PREFIX}.${HOSTNAME}
+    host: ${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 1883-tcp
     tls:
@@ -247,9 +250,9 @@ objects:
   metadata:
     labels:
       app: ${NAME}
-    name: ${NAME}-dashboard
+    name: dashboard
   spec:
-    host: ${DASHBOARD_ROUTE_PREFIX}.${HOSTNAME}
+    host: ${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 18083-tcp
     tls:
@@ -279,29 +282,11 @@ parameters:
     required: true
     value: emqx3
 
-  - name: WEBSOCKET_ROUTE_PREFIX
-    displayName: Route prefix for MQTT over WSS endpoint
+  - name: ROUTE_PREFIX
+    displayName: Route prefix for routes
     description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
     required: true
-    value: wss-mqtt
-
-  - name: MQTT_ROUTE_PREFIX
-    displayName: Route prefix for MQTT endpoint
-    description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
-    required: true
-    value: mqtt
-
-  - name: MQTT_EDGE_ROUTE_PREFIX
-    displayName: Route prefix for MQTT edge endpoint
-    description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
-    required: true
-    value: mqtt-edge
-
-  - name: DASHBOARD_ROUTE_PREFIX
-    displayName: Route prefix for EMQX dashboard
-    description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
-    required: true
-    value: emqx3-dashboard
+    value: -emqx3
 
   - name: NAMESPACE
     displayName: Namespace
