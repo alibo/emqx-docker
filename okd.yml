@@ -223,6 +223,42 @@ objects:
       weight: 100
     wildcardPolicy: None
 
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${NAME}
+    name: ${NAME}-MQTT-edge
+  spec:
+    host: ${MQTT_EDGE_ROUTE_PREFIX}.${HOSTNAME}
+    port:
+      targetPort: 1883-tcp
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: ${SERVICE_NAME}
+      weight: 100
+    wildcardPolicy: None
+
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${NAME}
+    name: ${NAME}-dashboard
+  spec:
+    host: ${DASHBOARD_ROUTE_PREFIX}.${HOSTNAME}
+    port:
+      targetPort: 18083-tcp
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: ${SERVICE_NAME}
+      weight: 100
+    wildcardPolicy: None
+
 parameters:
   - name: EMQ_NODE_COOKIE
     description: "Cookie for distributed erlang nodes"
@@ -254,6 +290,18 @@ parameters:
     description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
     required: true
     value: mqtt
+
+  - name: MQTT_EDGE_ROUTE_PREFIX
+    displayName: Route prefix for MQTT edge endpoint
+    description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
+    required: true
+    value: mqtt-edge
+
+  - name: DASHBOARD_ROUTE_PREFIX
+    displayName: Route prefix for EMQX dashboard
+    description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
+    required: true
+    value: emqx3-dashboard
 
   - name: NAMESPACE
     displayName: Namespace
