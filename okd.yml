@@ -187,9 +187,9 @@ objects:
             periodSeconds: 10
           envFrom:
             - secretRef:
-                name: emq-node-cookie
+                name: "${NAME}-cookie-secret"
             - configMapRef:
-                name: emq-conf
+                name: "${NAME}-config"
         volumes:
             - name: "${SERVICE_NAME}-certs"
               configMap:
