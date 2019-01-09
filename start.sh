@@ -152,6 +152,7 @@ do
     WAIT_TIME=$((WAIT_TIME+1))
     if [[ $WAIT_TIME -gt $EMQX_WAIT_TIME ]]; then
         echo "['$(date -u +"%Y-%m-%dT%H:%M:%SZ")']:timeout error"
+        tail -n 100 $(ls $_EMQ_HOME/log/*)
         exit 1
     fi
 done
