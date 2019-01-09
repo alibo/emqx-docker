@@ -102,15 +102,20 @@ objects:
   metadata:
     name: "${NAME}-cookie-secret"
     app: "${NAME}"
-  type: Opaque
 
-## BuildConfig
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: emqx
+    labels:
+      app: emqx
+
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
     labels:
       app: "${NAME}"
-    name: "${NAME}"
+    name: emqx
   spec:
     failedBuildsHistoryLimit: 5
     nodeSelector: null
