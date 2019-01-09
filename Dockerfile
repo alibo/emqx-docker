@@ -2,7 +2,6 @@ FROM erlang:21.2-alpine
 
 MAINTAINER Huang Rui <vowstar@gmail.com>, EMQ X Team <support@emqx.io>
 
-ENV OTP_VERSION="21.2"
 ENV EMQX_VERSION=emqx30
 ENV EMQX_DEPS_DEFAULT_VSN=${EMQX_VERSION}
 ENV HOME /opt/emqx
