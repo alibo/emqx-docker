@@ -15,6 +15,10 @@ RUN set -xe \
         tar \
         git \
         wget \
+        make \
+        gcc \
+        bsd-compat-headers \
+        perl \
         && apk add --virtual .erlang-rundeps $runDeps lksctp-tools \
         && cd / && git clone -b ${EMQX_VERSION} https://github.com/emqx/emqx-rel /emqx \
         && cd /emqx \
