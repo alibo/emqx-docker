@@ -7,6 +7,7 @@ ENV HOME /opt/emqx
 
 RUN set -xe \
         && apk add --no-cache --virtual .fetch-deps \
+        build-base \
         curl \
         bsd-compat-headers \
         ca-certificates \
@@ -18,6 +19,14 @@ RUN set -xe \
         gcc \
         bsd-compat-headers \
         perl \
+        libc-dev \
+        autoconf \
+        linux-headers \
+        dpkg-dev dpkg \
+        ncurses-dev \
+        openssl-dev \
+        coreutils \
+        lksctp-tools-dev \
         && apk add --virtual .erlang-rundeps $runDeps lksctp-tools \
         && cd / && git clone -b ${EMQX_VERSION} https://github.com/emqx/emqx-rel /emqx \
         && cd /emqx \
