@@ -266,7 +266,6 @@ parameters:
     generate: expression
     from: "[a-zA-Z0-9]{16}"
 
-parameters:
   - name: SERVICE_NAME
     displayName: Service Name
     description: The name used when creating the required 
