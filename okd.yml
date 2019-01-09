@@ -55,7 +55,7 @@ objects:
     EMQ_CLUSTER__AUTOHEAL: "on"
     EMQ_CLUSTER__DISCOVERY: k8s
     EMQ_CLUSTER__K8S__ADDRESS_TYPE: ip
-    EMQ_CLUSTER__K8S__APISERVER: "${SERVICE_NAME}"
+    EMQ_CLUSTER__K8S__APISERVER: "${K8S_API_SERVER}"
     EMQ_CLUSTER__K8S__APP_NAME: "${NAME}"
     EMQ_CLUSTER__K8S__NAMESPACE: "${NAMESPACE}"
     EMQ_CLUSTER__K8S__SERVICE_NAME: "${SERVICE_NAME}"
@@ -304,3 +304,10 @@ parameters:
     description: Hostname of router
     required: true
     value: apps.example.com
+
+  - name: K8S_API_SERVER
+    displayName: Kubernetes API Server
+    description: Kubernetes API Server
+    required: true
+    value: k8s.example.com
+  
