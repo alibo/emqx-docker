@@ -60,8 +60,6 @@ RUN set -xe \
         && make \
         && mkdir -p /opt && mv /emqx/_rel/emqx /opt/emqx \
         && cd / && rm -rf /emqx \
-        && mv /start.sh /opt/emqx/start.sh \
-        && chmod +x /opt/emqx/start.sh \
         && ln -s /opt/emqx/bin/* /usr/local/bin/ \
         # removing fetch deps and build deps
         && apk --purge del .build-deps .fetch-deps \
