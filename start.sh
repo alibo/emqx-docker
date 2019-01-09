@@ -16,7 +16,7 @@ LOCAL_IP=$(hostname -i |grep -E -oh '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.
 # Base settings in $_EMQ_HOME/etc/emqx.conf
 # Plugin settings in $_EMQ_HOME/etc/plugins
 
-$_EMQ_HOME=$HOME
+_EMQ_HOME=$HOME
 
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
