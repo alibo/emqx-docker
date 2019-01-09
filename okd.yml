@@ -204,7 +204,7 @@ objects:
   spec:
     host: wss-${ROUTE_PREFIX}.${HOSTNAME}
     port:
-      targetPort: 8083-tcp
+      targetPort: wss
     tls:
       termination: edge
       insecureEdgeTerminationPolicy: None
@@ -223,7 +223,7 @@ objects:
   spec:
     host: mqtt-${ROUTE_PREFIX}.${HOSTNAME}
     port:
-      targetPort: 8883-tcp
+      targetPort: mqttssl
     tls:
       termination: passthrough
     to:
@@ -241,7 +241,7 @@ objects:
   spec:
     host: mqtt-edge-${ROUTE_PREFIX}.${HOSTNAME}
     port:
-      targetPort: 1883-tcp
+      targetPort: mqtt
     tls:
       termination: edge
     to:
@@ -259,7 +259,7 @@ objects:
   spec:
     host: dashboard-${ROUTE_PREFIX}.${HOSTNAME}
     port:
-      targetPort: 18083-tcp
+      targetPort: dashboard
     tls:
       termination: edge
     to:
