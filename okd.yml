@@ -197,7 +197,7 @@ objects:
       app: ${NAME}
     name: wss
   spec:
-    host: ${ROUTE_PREFIX}.${HOSTNAME}
+    host: wss-${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 8083-tcp
     tls:
@@ -216,7 +216,7 @@ objects:
       app: ${NAME}
     name: mqtt
   spec:
-    host: ${ROUTE_PREFIX}.${HOSTNAME}
+    host: mqtt-${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 8883-tcp
     tls:
@@ -234,7 +234,7 @@ objects:
       app: ${NAME}
     name: mqtt-edge
   spec:
-    host: ${ROUTE_PREFIX}.${HOSTNAME}
+    host: mqtt-edge-${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 1883-tcp
     tls:
@@ -252,7 +252,7 @@ objects:
       app: ${NAME}
     name: dashboard
   spec:
-    host: ${ROUTE_PREFIX}.${HOSTNAME}
+    host: dashboard-${ROUTE_PREFIX}.${HOSTNAME}
     port:
       targetPort: 18083-tcp
     tls:
@@ -286,7 +286,7 @@ parameters:
     displayName: Route prefix for routes
     description: Must be unique across all projects, and contain only lower-case letters, numbers and dashes.
     required: true
-    value: -emqx3
+    value: emqx3
 
   - name: NAMESPACE
     displayName: Namespace
@@ -298,4 +298,4 @@ parameters:
     displayName: Router Hostname
     description: Hostname of router
     required: true
-    value: example.com
+    value: apps.example.com
