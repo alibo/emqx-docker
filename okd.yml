@@ -138,8 +138,8 @@ objects:
     triggers:
     - type: ConfigChange
 
-- apiVersion: apps/v1beta1
-  kind: StatefulSet
+- apiVersion: v1
+  kind: DeploymentConfig
   metadata:
     name: "${SERVICE_NAME}"
     labels:
@@ -200,6 +200,7 @@ objects:
   metadata:
     labels:
       app: ${NAME}
+      router: public
     name: wss
   spec:
     host: wss-${ROUTE_PREFIX}.${HOSTNAME}
@@ -219,6 +220,7 @@ objects:
   metadata:
     labels:
       app: ${NAME}
+      router: public
     name: mqtt
   spec:
     host: mqtt-${ROUTE_PREFIX}.${HOSTNAME}
@@ -237,6 +239,7 @@ objects:
   metadata:
     labels:
       app: ${NAME}
+      router: public
     name: mqtt-edge
   spec:
     host: mqtt-edge-${ROUTE_PREFIX}.${HOSTNAME}
@@ -255,9 +258,10 @@ objects:
   metadata:
     labels:
       app: ${NAME}
+      router: private
     name: dashboard
   spec:
-    host: dashboard-${ROUTE_PREFIX}.${HOSTNAME}
+    host: dashboard-${ROUTE_PREFIX}.${PRIVATE_HOSTNAME}
     port:
       targetPort: dashboard
     tls:
@@ -303,7 +307,13 @@ parameters:
     displayName: Router Hostname
     description: Hostname of router
     required: true
-    value: apps.example.com
+    value: apps.public.example.com
+
+  - name: PRIVATE_HOSTNAME
+    displayName: Private Router Hostname
+    description: Hostname of private router
+    required: true
+    value: apps.private.example.com
 
   - name: K8S_API_SERVER
     displayName: Kubernetes API Server
