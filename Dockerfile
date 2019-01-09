@@ -21,6 +21,7 @@ RUN set -xe \
         && apk add --virtual .erlang-rundeps $runDeps lksctp-tools \
         && cd / && git clone -b ${EMQX_VERSION} https://github.com/emqx/emqx-rel /emqx \
         && cd /emqx \
+        && curl -fSL -o erlang.mk https://raw.githubusercontent.com/emqx/erlmk/master/erlang.mk \
         && make \
         && mkdir -p /opt && mv /emqx/_rel/emqx /opt/emqx \
         && cd / && rm -rf /emqx \
