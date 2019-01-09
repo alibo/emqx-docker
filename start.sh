@@ -20,7 +20,7 @@ _EMQ_HOME=$HOME
 
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
-    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${_EMQ_HOME}:/sbin/nologin" >> /etc/passwd
+    echo "${USER_NAME:-emqx}:x:$(id -u):0:${USER_NAME:-emqx} user:${_EMQ_HOME}:/sbin/nologin" >> /etc/passwd
   fi
 fi
 

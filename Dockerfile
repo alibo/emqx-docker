@@ -46,9 +46,8 @@ RUN chmod +x ./start.sh
 
 RUN mkdir -p /opt/emqx/log /opt/emqx/data /opt/emqx/lib /opt/emqx/etc \
         && chgrp -R 0 /opt/emqx \
-        && chmod -R g=u /opt/emqx
-
-USER 1001
+        && chmod -R g=u /opt/emqx \
+        && chmod g=u /etc/passwd
 
 # VOLUME ["/opt/emqx/log", "/opt/emqx/data", "/opt/emqx/lib", "/opt/emqx/etc"]
 
