@@ -4,6 +4,7 @@ MAINTAINER Huang Rui <vowstar@gmail.com>, EMQ X Team <support@emqx.io>
 
 ENV EMQX_VERSION=v3.0.0
 ENV HOME /opt/emqx
+ENV TZ=UTC
 
 RUN set -xe \
         && apk add --no-cache --virtual .fetch-deps \
@@ -43,11 +44,11 @@ WORKDIR ${HOME}
 COPY ./start.sh ./
 RUN chmod +x ./start.sh
 
-RUN adduser -D -u 10001 emqx
-RUN chgrp -Rf emqx /opt/emqx && chmod -Rf g+w /opt/emqx \
-        && chown -Rf emqx /opt/emqx
+RUN mkdir -p /opt/emqx/log /opt/emqx/data /opt/emqx/lib /opt/emqx/etc \
+        && chgrp -R 0 /opt/emqx \
+        && chmod -R g=u /opt/emqx
 
-USER 10001
+USER 1001
 
 # VOLUME ["/opt/emqx/log", "/opt/emqx/data", "/opt/emqx/lib", "/opt/emqx/etc"]
 
