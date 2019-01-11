@@ -65,7 +65,5 @@ EXPOSE 1883 8883 8083 8084 8080 18083 4369 5369 6369 6000-6999
 
 RUN apk add --no-cache curl
 
-RUN echo 'export EMQ_CLUSTER__K8S__APP_NAME=`hostname`' >> /etc/profile
-
 # start emqx and initial environments
 CMD ["./start.sh"]

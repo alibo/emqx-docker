@@ -18,8 +18,6 @@ LOCAL_IP=$(hostname -i |grep -E -oh '((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.
 
 _EMQ_HOME=$HOME
 
-export EMQ_CLUSTER__K8S__APP_NAME=`hostname`
-
 if ! whoami &> /dev/null; then
   if [ -w /etc/passwd ]; then
     echo "${USER_NAME:-emqx}:x:$(id -u):0:${USER_NAME:-emqx} user:${_EMQ_HOME}:/sbin/nologin" >> /etc/passwd
