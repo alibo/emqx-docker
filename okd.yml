@@ -97,7 +97,7 @@ objects:
 
 - apiVersion: v1
   data:
-    EMQ_NODE__COOKIE: "${EMQ_NODE_COOKIE}"
+    EMQX_NODE__COOKIE: "${EMQ_NODE_COOKIE}"
   kind: Secret
   metadata:
     name: "${NAME}-cookie-secret"
